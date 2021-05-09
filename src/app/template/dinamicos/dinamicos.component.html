@@ -1,0 +1,93 @@
+<h1>Template: <small>Dinámicos</small></h1>
+<hr />
+<form (ngSubmit)="guardar()" autocomplete="off" #miFormulario="ngForm">
+  <!-- Campo nombre -->
+  <div class="mb-3 row">
+    <label class="col-sm-3 col-form-label">Nombre</label>
+    <div class="col-sm-9">
+      <input
+        class="form-control"
+        ngModel
+        name="nombre"
+        required
+        placeholder="Nombre del usuario"
+      />
+      <span
+        class="text-danger"
+        *ngIf="
+          miFormulario.controls.nombre?.errors &&
+          miFormulario.controls.nombre?.touched
+        "
+        >Este campo es obligatorio</span
+      >
+    </div>
+  </div>
+  <!-- Campo agregar favoritos -->
+  <div class="mb-3 row">
+    <label class="col-sm-3 col-form-label">Agregar</label>
+    <div class="col-sm-9">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Agregar favorito"
+          [(ngModel)]="nuevoJuego"
+          name="nuevoJuego"
+          (keyup.enter)="agregarJuego()"
+          required
+        />
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="agregarJuego()"
+          [disabled]="miFormulario.controls.nuevoJuego?.errors"
+        >
+          Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button
+        type="button"
+        class="btn btn-primary float-end"
+        (click)="guardar()"
+        [disabled]="miFormulario.invalid"
+      >
+        Guardar
+      </button>
+    </div>
+  </div>
+  <!-- Lista de favoritos -->
+  <div class="mb-3 row">
+    <label class="col-sm-3 col-form-label">Favoritos</label>
+    <div class="col-sm-9">
+      <div
+        class="input-group mt-2 mb-1"
+        *ngFor="let favorito of juegosFavoritos.favoritos; index as i"
+      >
+        <input
+          class="form-control"
+          name="favorito{{ i }}"
+          [(ngModel)]="favorito.juego"
+          required
+        />
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="eliminarFavorito(i)"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+<h5>Información del formulario</h5>
+<code>
+  <pre
+    >{{ juegosFavoritos | json }}
+      </pre
+  >
+</code>
